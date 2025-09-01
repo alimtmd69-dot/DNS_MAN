@@ -10,8 +10,16 @@ vless://266de74e-4d2e-4413-835c-f7485d42467a@172.67.203.46:443?path=%2Fcin.alimt
 vless://266de74e-4d2e-4413-835c-f7485d42467a@188.114.97.7:443?path=%2Fcin.alimtaabks.workers.dev%2F%3Fed%3D2560%26PROT_TYPE%3Dvless&security=tls&encryption=none&host=cin.alimtaabks.workers.dev&fp=randomized&type=ws&sni=cin.alimtaabks.workers.dev#Chin%20Worker
 trojan://trojan@104.26.13.214:443?path=%2F%3Fed%3D2560&security=tls&host=trojan-nak.pages.dev&fp=random&type=ws&sni=trojan-nak.pages.dev#Trojan
 trojan://trojan@104.18.26.90:443?path=%2F%3Fed%3D2560&security=tls&host=trojan-nak.pages.dev&fp=random&type=ws&sni=trojan-nak.pages.dev#Trojan
+trojan://trojan@188.114.97.7:443?path=%2F%3Fed%3D2560&security=tls&host=trojan.alimtaabks.workers.dev&fp=random&type=ws&sni=trojan.alimtaabks.workers.dev#Trojan%20worker
+trojan://trojan@104.18.26.90:443?path=%2F%3Fed%3D2560&security=tls&host=trojan.alimtaabks.workers.dev&fp=random&type=ws&sni=trojan.alimtaabks.workers.dev#Trojan%20worker
+trojan://trojan@188.114.97.7:80?path=%2F%3Fed%3D2560&security=none&host=trojan.alimtaabks.workers.dev&type=ws#Trojan%20worker
+trojan://trojan@104.18.26.90:80?path=%2F%3Fed%3D2560&security=none&host=trojan.alimtaabks.workers.dev&type=ws#Trojan%20worker
 vless://cf173d00-165a-45eb-afc4-65c21b9f67e8@188.114.97.7:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&host=vless-1x6.pages.dev&fp=random&type=ws&sni=vless-1x6.pages.dev#vless
 vless://cf173d00-165a-45eb-afc4-65c21b9f67e8@104.18.26.90:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&host=vless-1x6.pages.dev&fp=random&type=ws&sni=vless-1x6.pages.dev#vless
+vless://804b27c7-1327-43ae-bbf8-d2aa3dc2171d@188.114.97.7:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&host=autumn.alimtaabks.workers.dev&fp=random&type=ws&sni=autumn.alimtaabks.workers.dev#Vless%20Worker
+vless://804b27c7-1327-43ae-bbf8-d2aa3dc2171d@104.18.26.90:443?path=%2F%3Fed%3D2560&security=tls&encryption=none&host=autumn.alimtaabks.workers.dev&fp=random&type=ws&sni=autumn.alimtaabks.workers.dev#Vless%20Worker
+vless://804b27c7-1327-43ae-bbf8-d2aa3dc2171d@188.114.97.7:80?path=%2F%3Fed%3D2560&security=&encryption=none&host=autumn.alimtaabks.workers.dev&type=ws#Vless%20Worker
+vless://804b27c7-1327-43ae-bbf8-d2aa3dc2171d@104.18.26.90:80?path=%2F%3Fed%3D2560&security=&encryption=none&host=autumn.alimtaabks.workers.dev&type=ws#Vless%20Worker
 vless://0ccf2b28-bcfb-46fe-b710-97a78b63c6e6@104.26.13.214:443?path=%2Fchin-989.pages.dev%2F%3Fed%3D2560%26PROT_TYPE%3Dvless&security=tls&encryption=none&host=chin-989.pages.dev&fp=randomized&type=ws&sni=chin-989.pages.dev#Chin%20Pagez
 vless://0ccf2b28-bcfb-46fe-b710-97a78b63c6e6@104.18.26.90:443?path=%2Fchin-989.pages.dev%2F%3Fed%3D2560%26PROT_TYPE%3Dvless&security=tls&encryption=none&host=chin-989.pages.dev&fp=randomized&type=ws&sni=chin-989.pages.dev#Chin%20Pagez
 vless://0ccf2b28-bcfb-46fe-b710-97a78b63c6e6@188.114.97.7:443?path=%2Fchin-989.pages.dev%2F%3Fed%3D2560%26PROT_TYPE%3Dvless&security=tls&encryption=none&host=chin-989.pages.dev&fp=randomized&type=ws&sni=chin-989.pages.dev#Chin%20Pagez
