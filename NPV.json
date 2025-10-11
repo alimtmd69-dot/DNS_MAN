@@ -1,0 +1,570 @@
+{
+  "remarks": "💦 1 - VLESS - Domain : 443",
+  "log": {
+    "loglevel": "warning"
+  },
+  "dns": {
+    "hosts": {
+      "gxujbbfk42.cloudflare-gateway.com": [
+        "162.159.36.20",
+        "162.159.36.5",
+        "2606:4700:5c::a29f:2e07",
+        "2606:4700:54::a29f:2407"
+      ],
+      "geosite:category-ads-all": [
+        "127.0.0.1"
+      ],
+      "geosite:category-ads-ir": [
+        "127.0.0.1"
+      ]
+    },
+    "servers": [
+      {
+        "address": "fakedns",
+        "domains": [
+          "geosite:category-ir",
+          "geosite:openai",
+          "geosite:microsoft",
+          "geosite:oracle",
+          "geosite:docker",
+          "geosite:adobe",
+          "geosite:epicgames",
+          "geosite:intel",
+          "geosite:amd",
+          "geosite:nvidia",
+          "geosite:asus",
+          "geosite:hp",
+          "geosite:lenovo",
+          "full:bpb360.pages.dev"
+        ]
+      },
+      {
+        "address": "https://gxujbbfk42.cloudflare-gateway.com/dns-query",
+        "tag": "remote-dns"
+      },
+      {
+        "address": "8.8.4.4",
+        "domains": [
+          "geosite:category-ir"
+        ],
+        "expectIPs": [
+          "geoip:ir"
+        ],
+        "skipFallback": true
+      },
+      {
+        "address": "78.157.42.100",
+        "domains": [
+          "geosite:openai",
+          "geosite:microsoft",
+          "geosite:oracle",
+          "geosite:docker",
+          "geosite:adobe",
+          "geosite:epicgames",
+          "geosite:intel",
+          "geosite:amd",
+          "geosite:nvidia",
+          "geosite:asus",
+          "geosite:hp",
+          "geosite:lenovo"
+        ],
+        "skipFallback": true
+      },
+      {
+        "address": "8.8.4.4",
+        "domains": [
+          "full:bpb360.pages.dev"
+        ],
+        "skipFallback": true
+      }
+    ],
+    "queryStrategy": "UseIP",
+    "tag": "dns"
+  },
+  "inbounds": [
+    {
+      "port": 10808,
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": true,
+        "userLevel": 8
+      },
+      "sniffing": {
+        "destOverride": [
+          "http",
+          "tls",
+          "fakedns"
+        ],
+        "enabled": true,
+        "routeOnly": true
+      },
+      "tag": "mixed-in"
+    },
+    {
+      "port": 10853,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "address": "1.1.1.1",
+        "network": "tcp,udp",
+        "port": 53
+      },
+      "tag": "dns-in"
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "bpb360.pages.dev",
+            "port": 443,
+            "users": [
+              {
+                "id": "aaf3d0c4-7308-41e7-8204-153c2d94261c",
+                "encryption": "none",
+                "level": 8
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "tls",
+        "sockopt": {
+          "domainStrategy": "UseIP",
+          "tcpFastOpen": true,
+          "happyEyeballs": {
+            "tryDelayMs": 250,
+            "prioritizeIPv6": false,
+            "interleave": 2,
+            "maxConcurrentTry": 4
+          }
+        },
+        "wsSettings": {
+          "host": "bpb360.pages.dev",
+          "path": "/eyJqdW5rIjoiTjFYUk1CWlFFcyIsInByb3RvY29sIjoidmwiLCJtb2RlIjoicHJlZml4IiwicGFuZWxJUHMiOlsiWzJhMDI6ODk4OjE0Njo2NDo6XSJdfQ==?ed=2560"
+        },
+        "tlsSettings": {
+          "allowInsecure": false,
+          "fingerprint": "chrome",
+          "alpn": [
+            "http/1.1"
+          ],
+          "serverName": "BpB360.PagEs.Dev"
+        }
+      },
+      "tag": "proxy"
+    },
+    {
+      "protocol": "dns",
+      "tag": "dns-out"
+    },
+    {
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "UseIP"
+      },
+      "tag": "direct"
+    },
+    {
+      "protocol": "blackhole",
+      "settings": {
+        "response": {
+          "type": "http"
+        }
+      },
+      "tag": "block"
+    }
+  ],
+  "policy": {
+    "levels": {
+      "8": {
+        "connIdle": 300,
+        "downlinkOnly": 1,
+        "handshake": 4,
+        "uplinkOnly": 1
+      }
+    },
+    "system": {
+      "statsOutboundUplink": true,
+      "statsOutboundDownlink": true
+    }
+  },
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "inboundTag": [
+          "mixed-in"
+        ],
+        "port": 53,
+        "outboundTag": "dns-out",
+        "type": "field"
+      },
+      {
+        "inboundTag": [
+          "dns-in"
+        ],
+        "outboundTag": "dns-out",
+        "type": "field"
+      },
+      {
+        "inboundTag": [
+          "remote-dns"
+        ],
+        "outboundTag": "proxy",
+        "type": "field"
+      },
+      {
+        "inboundTag": [
+          "dns"
+        ],
+        "outboundTag": "direct",
+        "type": "field"
+      },
+      {
+        "domain": [
+          "geosite:private"
+        ],
+        "outboundTag": "direct",
+        "type": "field"
+      },
+      {
+        "ip": [
+          "geoip:private"
+        ],
+        "outboundTag": "direct",
+        "type": "field"
+      },
+      {
+        "network": "udp",
+        "outboundTag": "block",
+        "type": "field"
+      },
+      {
+        "domain": [
+          "geosite:category-ads-all",
+          "geosite:category-ads-ir"
+        ],
+        "outboundTag": "block",
+        "type": "field"
+      },
+      {
+        "domain": [
+          "geosite:category-ir",
+          "geosite:openai",
+          "geosite:microsoft",
+          "geosite:oracle",
+          "geosite:docker",
+          "geosite:adobe",
+          "geosite:epicgames",
+          "geosite:intel",
+          "geosite:amd",
+          "geosite:nvidia",
+          "geosite:asus",
+          "geosite:hp",
+          "geosite:lenovo"
+        ],
+        "outboundTag": "direct",
+        "type": "field"
+      },
+      {
+        "ip": [
+          "geoip:ir"
+        ],
+        "outboundTag": "direct",
+        "type": "field"
+      },
+      {
+        "network": "tcp",
+        "outboundTag": "proxy",
+        "type": "field"
+      }
+    ]
+  },
+  "stats": {}
+}
+{
+  "remarks": "💦 3 - VLESS - IPv4 : 443",
+  "log": {
+    "loglevel": "warning"
+  },
+  "dns": {
+    "hosts": {
+      "gxujbbfk42.cloudflare-gateway.com": [
+        "162.159.36.20",
+        "162.159.36.5",
+        "2606:4700:5c::a29f:2e07",
+        "2606:4700:54::a29f:2407"
+      ],
+      "geosite:category-ads-all": [
+        "127.0.0.1"
+      ],
+      "geosite:category-ads-ir": [
+        "127.0.0.1"
+      ]
+    },
+    "servers": [
+      {
+        "address": "fakedns",
+        "domains": [
+          "geosite:category-ir",
+          "geosite:openai",
+          "geosite:microsoft",
+          "geosite:oracle",
+          "geosite:docker",
+          "geosite:adobe",
+          "geosite:epicgames",
+          "geosite:intel",
+          "geosite:amd",
+          "geosite:nvidia",
+          "geosite:asus",
+          "geosite:hp",
+          "geosite:lenovo"
+        ]
+      },
+      {
+        "address": "https://gxujbbfk42.cloudflare-gateway.com/dns-query",
+        "tag": "remote-dns"
+      },
+      {
+        "address": "8.8.4.4",
+        "domains": [
+          "geosite:category-ir"
+        ],
+        "expectIPs": [
+          "geoip:ir"
+        ],
+        "skipFallback": true
+      },
+      {
+        "address": "78.157.42.100",
+        "domains": [
+          "geosite:openai",
+          "geosite:microsoft",
+          "geosite:oracle",
+          "geosite:docker",
+          "geosite:adobe",
+          "geosite:epicgames",
+          "geosite:intel",
+          "geosite:amd",
+          "geosite:nvidia",
+          "geosite:asus",
+          "geosite:hp",
+          "geosite:lenovo"
+        ],
+        "skipFallback": true
+      }
+    ],
+    "queryStrategy": "UseIP",
+    "tag": "dns"
+  },
+  "inbounds": [
+    {
+      "port": 10808,
+      "protocol": "socks",
+      "settings": {
+        "auth": "noauth",
+        "udp": true,
+        "userLevel": 8
+      },
+      "sniffing": {
+        "destOverride": [
+          "http",
+          "tls",
+          "fakedns"
+        ],
+        "enabled": true,
+        "routeOnly": true
+      },
+      "tag": "mixed-in"
+    },
+    {
+      "port": 10853,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "address": "1.1.1.1",
+        "network": "tcp,udp",
+        "port": 53
+      },
+      "tag": "dns-in"
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "172.66.44.87",
+            "port": 443,
+            "users": [
+              {
+                "id": "aaf3d0c4-7308-41e7-8204-153c2d94261c",
+                "encryption": "none",
+                "level": 8
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "tls",
+        "sockopt": {
+          "domainStrategy": "UseIP",
+          "tcpFastOpen": true,
+          "happyEyeballs": {
+            "tryDelayMs": 250,
+            "prioritizeIPv6": false,
+            "interleave": 2,
+            "maxConcurrentTry": 4
+          }
+        },
+        "wsSettings": {
+          "host": "bpb360.pages.dev",
+          "path": "/eyJqdW5rIjoiY1lxN05KeXViMWllRiIsInByb3RvY29sIjoidmwiLCJtb2RlIjoicHJlZml4IiwicGFuZWxJUHMiOlsiWzJhMDI6ODk4OjE0Njo2NDo6XSJdfQ==?ed=2560"
+        },
+        "tlsSettings": {
+          "allowInsecure": false,
+          "fingerprint": "chrome",
+          "alpn": [
+            "http/1.1"
+          ],
+          "serverName": "BPB360.paGes.dEv"
+        }
+      },
+      "tag": "proxy"
+    },
+    {
+      "protocol": "dns",
+      "tag": "dns-out"
+    },
+    {
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "UseIP"
+      },
+      "tag": "direct"
+    },
+    {
+      "protocol": "blackhole",
+      "settings": {
+        "response": {
+          "type": "http"
+        }
+      },
+      "tag": "block"
+    }
+  ],
+  "policy": {
+    "levels": {
+      "8": {
+        "connIdle": 300,
+        "downlinkOnly": 1,
+        "handshake": 4,
+        "uplinkOnly": 1
+      }
+    },
+    "system": {
+      "statsOutboundUplink": true,
+      "statsOutboundDownlink": true
+    }
+  },
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "inboundTag": [
+          "mixed-in"
+        ],
+        "port": 53,
+        "outboundTag": "dns-out",
+        "type": "field"
+      },
+      {
+        "inboundTag": [
+          "dns-in"
+        ],
+        "outboundTag": "dns-out",
+        "type": "field"
+      },
+      {
+        "inboundTag": [
+          "remote-dns"
+        ],
+        "outboundTag": "proxy",
+        "type": "field"
+      },
+      {
+        "inboundTag": [
+          "dns"
+        ],
+        "outboundTag": "direct",
+        "type": "field"
+      },
+      {
+        "domain": [
+          "geosite:private"
+        ],
+        "outboundTag": "direct",
+        "type": "field"
+      },
+      {
+        "ip": [
+          "geoip:private"
+        ],
+        "outboundTag": "direct",
+        "type": "field"
+      },
+      {
+        "network": "udp",
+        "outboundTag": "block",
+        "type": "field"
+      },
+      {
+        "domain": [
+          "geosite:category-ads-all",
+          "geosite:category-ads-ir"
+        ],
+        "outboundTag": "block",
+        "type": "field"
+      },
+      {
+        "domain": [
+          "geosite:category-ir",
+          "geosite:openai",
+          "geosite:microsoft",
+          "geosite:oracle",
+          "geosite:docker",
+          "geosite:adobe",
+          "geosite:epicgames",
+          "geosite:intel",
+          "geosite:amd",
+          "geosite:nvidia",
+          "geosite:asus",
+          "geosite:hp",
+          "geosite:lenovo"
+        ],
+        "outboundTag": "direct",
+        "type": "field"
+      },
+      {
+        "ip": [
+          "geoip:ir"
+        ],
+        "outboundTag": "direct",
+        "type": "field"
+      },
+      {
+        "network": "tcp",
+        "outboundTag": "proxy",
+        "type": "field"
+      }
+    ]
+  },
+  "stats": {}
+}
